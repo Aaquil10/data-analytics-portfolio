@@ -24,23 +24,7 @@ Analyzes large-scale traffic crash data from Washington, DC to evaluate crash se
 
 ---
 
-### 2. Predicting Loan Acceptance for OneBank (DA/CSC 423/523 Final Project)  
-**Tools:** Python, Jupyter Notebook, pandas, scikit-learn  
-**Focus:** Business analytics, classification modeling, ensemble methods  
-
-Final project for DA/CSC 423/523 (Professor: Aysegul Cuhadar). Builds and evaluates ensemble-based classification models to predict whether a customer will accept a loan offer, with emphasis on model comparison and actionable business insights.
-
-**Key techniques:**
-- Data cleaning, feature engineering, train/test evaluation
-- Ensemble modeling (e.g., Random Forest / Gradient Boosting or similar)
-- Performance metrics (ROC-AUC, precision/recall, F1) and model comparison
-- Interpretation of key drivers influencing acceptance
-
-📁 Folder: `projects/onebank-loan-acceptance/`
-
----
-
-### 3. Heart Disease Prediction Project  
+### 2. Heart Disease Prediction Project  
 **Tools:** Python, pandas, scikit-learn  
 **Focus:** Healthcare analytics, classification modeling  
 
@@ -53,6 +37,22 @@ Applies machine learning methods to predict the presence of heart disease using 
 
 📁 Folder: `projects/heart-disease-prediction/`
 
+
+---
+
+### 3. Predicting Loan Acceptance for OneBank (DA/CSC 423/523 Final Project)  
+**Tools:** Python, Jupyter Notebook, pandas, scikit-learn  
+**Focus:** Business analytics, classification modeling, ensemble methods  
+
+Final project for DA/CSC 423/523 (Professor: Aysegul Cuhadar). Builds and evaluates ensemble-based classification models to predict whether a customer will accept a loan offer, with emphasis on model comparison and actionable business insights.
+
+**Key techniques:**
+- Data cleaning, feature engineering, train/test evaluation
+- Ensemble modeling (e.g., Random Forest / Gradient Boosting or similar)
+- Performance metrics (ROC-AUC, precision/recall, F1) and model comparison
+- Interpretation of key drivers influencing acceptance
+
+📁 Folder: `projects/onebank-loan-acceptance/`
 ---
 
 ### 4. Titanic Survival Analysis (R)  
