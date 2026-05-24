@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Deep Dive | Ibrahima Medina Aaquil</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07090f;--bg2:#0d1020;--bg3:#131625;--surface:#181d2e;--surface2:#1e2438;
+  --green:#00f5c4;--blue:#00b4ff;
+  --green-glow:rgba(0,245,196,0.1);--blue-glow:rgba(0,180,255,0.1);
+  --text:#e8edf8;--text2:#8892b0;--text3:#4a5268;
+  --border:rgba(255,255,255,0.06);--border-g:rgba(0,245,196,0.2);--border-b:rgba(0,180,255,0.2);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(0,245,196,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,255,0.025) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;z-index:0}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem 3.5rem;background:rgba(7,9,15,0.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--text);text-decoration:none}
+.nav-logo span{color:var(--green)}
+.back-btn{padding:0.55rem 1.4rem;background:transparent;border:1px solid var(--border-g);color:var(--green);
+  font-weight:700;font-size:0.82rem;border-radius:4px;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.back-btn:hover{background:var(--green-glow)}
+
+.page{max-width:1100px;margin:0 auto;padding:8rem 2rem 4rem;position:relative;z-index:1}
+
+.s-label{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--green);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.8rem}
+.s-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:1rem}
+.s-sub{color:var(--text2);font-size:1rem;max-width:700px;margin-bottom:3rem;line-height:1.8}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.75rem;transition:all 0.3s;position:relative;overflow:hidden;margin-bottom:1.5rem}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--blue));opacity:0;transition:opacity 0.3s}
+.card:hover{border-color:rgba(0,245,196,0.18);background:var(--surface2)}
+.card:hover::before{opacity:1}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,245,196,0.25),rgba(0,180,255,0.25),transparent);margin:4rem 0;position:relative;z-index:1}
+
+.tag{display:inline-flex;padding:0.3rem 0.8rem;border-radius:4px;font-family:'DM Mono',monospace;font-size:0.68rem;font-weight:500;margin-right:0.4rem;margin-bottom:0.4rem}
+.tag-g{background:rgba(0,245,196,0.08);color:var(--green);border:1px solid rgba(0,245,196,0.2)}
+.tag-b{background:rgba(0,180,255,0.08);color:var(--blue);border:1px solid rgba(0,180,255,0.2)}
+.tag-p{background:rgba(124,58,237,0.1);color:#a78bfa;border:1px solid rgba(124,58,237,0.25)}
+.tag-y{background:rgba(245,158,11,0.1);color:#fbbf24;border:1px solid rgba(245,158,11,0.25)}
+
+/* METRICS GRID */
+.metrics-big{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2rem 0}
+.metric-big{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.5rem;text-align:center}
+.metric-big .val{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;
+  background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.metric-big .lbl{font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.4rem}
+
+/* MODEL COMPARISON TABLE */
+.model-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.88rem}
+.model-table th{background:var(--bg3);color:var(--text2);font-family:'DM Mono',monospace;font-size:0.7rem;
+  text-transform:uppercase;letter-spacing:0.1em;padding:0.8rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+.model-table td{padding:0.8rem 1rem;border-bottom:1px solid var(--border);color:var(--text2)}
+.model-table tr:hover td{background:var(--surface2);color:var(--text)}
+.model-table .winner{color:var(--green);font-weight:700}
+.model-table .highlight{color:var(--blue);font-weight:600}
+
+/* PIPELINE STEPS */
+.pipeline{display:flex;gap:0;margin:2rem 0;overflow-x:auto}
+.pipe-step{flex:1;min-width:140px;padding:1.2rem;background:var(--surface);border:1px solid var(--border);
+  border-right:none;position:relative;transition:all 0.2s}
+.pipe-step:last-child{border-right:1px solid var(--border)}
+.pipe-step:hover{background:var(--surface2)}
+.pipe-step::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);
+  color:var(--green);font-size:1.2rem;z-index:1}
+.pipe-step:last-child::after{display:none}
+.pipe-num{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--green);margin-bottom:0.4rem}
+.pipe-title{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;margin-bottom:0.3rem}
+.pipe-detail{font-size:0.75rem;color:var(--text3);line-height:1.4}
+
+/* CHART BARS */
+.chart-bar-container{margin:1.5rem 0}
+.chart-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem}
+.chart-label{width:160px;font-size:0.78rem;color:var(--text2);text-align:right;flex-shrink:0}
+.chart-bar-wrap{flex:1;background:var(--bg3);border-radius:3px;height:24px;overflow:hidden;border:1px solid var(--border)}
+.chart-bar{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:0.5rem;font-size:0.7rem;font-weight:700;color:#07090f;transition:width 1.5s ease}
+.chart-val{width:60px;font-size:0.75rem;font-family:'DM Mono',monospace;flex-shrink:0}
+
+/* KEY FINDINGS */
+.findings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin:2rem 0}
+.finding{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.5rem}
+.finding-icon{font-size:1.5rem;margin-bottom:0.8rem}
+.finding-title{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:0.5rem}
+.finding-text{color:var(--text2);font-size:0.85rem;line-height:1.65}
+.finding-highlight{color:var(--green);font-weight:600}
+
+/* CODE SNIPPET */
+.code-block{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:1.2rem;
+  font-family:'DM Mono',monospace;font-size:0.78rem;color:#a8b4d0;overflow-x:auto;margin:1rem 0;line-height:1.7}
+.code-comment{color:var(--text3)}
+.code-keyword{color:var(--blue)}
+.code-string{color:var(--green)}
+.code-num{color:#fbbf24}
+
+/* PROJECT DEEP DIVE */
+.proj-header{display:flex;gap:1.5rem;align-items:flex-start;margin-bottom:1.5rem}
+.proj-icon-big{font-size:3rem;flex-shrink:0}
+.proj-meta{}
+.proj-title-big{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:0.5rem}
+.proj-course{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--text3);margin-bottom:0.5rem}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:1.5rem 0}
+@media(max-width:768px){
+  .metrics-big{grid-template-columns:repeat(2,1fr)}
+  .two-col{grid-template-columns:1fr}
+  .pipeline{flex-direction:column}
+  .pipe-step::after{display:none}
+  nav{padding:1rem 1.5rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="ibrahima_aaquil_portfolio.html" class="nav-logo">IMA<span>_</span></a>
+  <a href="ibrahima_aaquil_portfolio.html" class="back-btn">← Back to Portfolio</a>
+</nav>
+
+<div class="page">
+
+  <div class="s-label">// Technical Deep Dive</div>
+  <h1 class="s-title">Research & Projects<br><span style="-webkit-text-stroke:1px rgba(232,237,248,0.2);color:transparent">In Detail</span></h1>
+  <p class="s-sub">A full technical breakdown of my research and project work — methodologies, model comparisons, key findings, and code. This is what I actually built.</p>
+
+  <!-- ===== TRAFFIC RESEARCH ===== -->
+  <div class="s-label" style="margin-top:2rem">// Project 01 — Main Research</div>
+  <h2 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:0.5rem">DC Traffic Crash Severity Analysis</h2>
+  <p style="color:var(--text2);margin-bottom:1.5rem">SSRN Preprint 2026 · Award for Excellence in Research — William & Mary</p>
+
+  <div style="margin-bottom:1rem">
+    <span class="tag tag-g">CatBoost</span><span class="tag tag-b">Geospatial</span>
+    <span class="tag tag-p">Difference-in-Differences</span><span class="tag tag-g">Python</span>
+    <span class="tag tag-b">BallTree</span><span class="tag tag-y">SSRN 2026</span>
+  </div>
+
+  <!-- BIG METRICS -->
+  <div class="metrics-big">
+    <div class="metric-big"><div class="val">300K+</div><div class="lbl">Crash Records · 15 Years</div></div>
+    <div class="metric-big"><div class="val">88.8%</div><div class="lbl">CatBoost Recall — Severe</div></div>
+    <div class="metric-big"><div class="val">−6.7%</div><div class="lbl">Camera Enforcement Effect</div></div>
+    <div class="metric-big"><div class="val">247</div><div class="lbl">Cameras Spatially Linked</div></div>
+  </div>
+
+  <!-- PIPELINE -->
+  <h3 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:1rem;color:var(--text)">Analytical Pipeline</h3>
+  <div class="pipeline">
+    <div class="pipe-step">
+      <div class="pipe-num">01</div>
+      <div class="pipe-title">Data Collection</div>
+      <div class="pipe-detail">DC Open Data Portal · 300K+ police-reported crashes · NOAA weather · 247 enforcement cameras</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">02</div>
+      <div class="pipe-title">Cleaning & Engineering</div>
+      <div class="pipe-detail">DateTime parsing · Coordinate validation · Severity binary encoding · Weather merge · Leakage removal</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">03</div>
+      <div class="pipe-title">Geospatial Analysis</div>
+      <div class="pipe-detail">Hexbin density maps · Ward-level clustering · Hotspot/blindspot identification · Wards 2, 5, 6 focus</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">04</div>
+      <div class="pipe-title">ML Modeling</div>
+      <div class="pipe-detail">4 models compared: RF, GB, Ensemble, CatBoost · Class weighting · Threshold tuning at 0.35</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">05</div>
+      <div class="pipe-title">Causal Inference (DiD)</div>
+      <div class="pipe-detail">BallTree camera linking · 100m radius · Pre/post labeling · Fixed effects regression</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">06</div>
+      <div class="pipe-title">Policy Insights</div>
+      <div class="pipe-detail">Camera type effectiveness · Severity trend analysis · Actionable recommendations</div>
+    </div>
+  </div>
+
+  <!-- MODEL COMPARISON -->
+  <div class="card" style="margin-top:2rem">
+    <h3 style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem">Model Comparison — Recall for Severe Crashes (Priority Metric)</h3>
+    <p style="color:var(--text2);font-size:0.88rem;margin-bottom:1.5rem">Recall was prioritized over accuracy — missing a severe crash is more costly than a false alarm. Four models were trained and compared:</p>
+
+    <div class="chart-bar-container">
+      <div class="chart-row">
+        <div class="chart-label">Gradient Boosting</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:91.2%;background:linear-gradient(90deg,#7c3aed,#a78bfa)">91.2%</div></div>
+        <div class="chart-val" style="color:#a78bfa">91.2%</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">CatBoost ⭐ Selected</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:88.8%;background:linear-gradient(90deg,var(--green),var(--blue))">88.8%</div></div>
+        <div class="chart-val" style="color:var(--green)">88.8%</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Ensemble (RF+GB)</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:64%;background:linear-gradient(90deg,var(--blue),#7c3aed)">64%</div></div>
+        <div class="chart-val" style="color:var(--blue)">64.0%</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Random Forest</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:28.4%;background:rgba(255,255,255,0.15)">28.4%</div></div>
+        <div class="chart-val" style="color:var(--text3)">28.4%</div>
+      </div>
+    </div>
+
+    <p style="font-size:0.8rem;color:var(--text3);font-family:'DM Mono',monospace;margin-top:1rem">
+      * CatBoost selected over GB due to better handling of heterogeneous features, native categorical support, and overall balance of precision/recall. Threshold tuned to 0.35 (default 0.5) to maximize severe crash detection.
+    </p>
+  </div>
+
+  <!-- DiD RESULTS -->
+  <div class="card">
+    <h3 style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1rem">Difference-in-Differences: Camera Enforcement Results</h3>
+    <div class="two-col">
+      <div>
+        <p style="color:var(--text2);font-size:0.88rem;margin-bottom:1rem">Using a BallTree spatial join (haversine distance), each crash was linked to its nearest camera. Crashes within 100 meters = treated group. A ±365-day window around each camera installation date defined the pre/post periods.</p>
+        <table class="model-table">
+          <thead><tr><th>Camera Type</th><th>Crash Reduction</th></tr></thead>
+          <tbody>
+            <tr><td>Truck Restriction</td><td class="winner">~−20%</td></tr>
+            <tr><td>Stop Sign</td><td class="highlight">~−14%</td></tr>
+            <tr><td>Red Light</td><td class="highlight">~−10%</td></tr>
+            <tr><td>Speed Camera</td><td style="color:var(--text2)">~−4%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.5rem">
+          <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1rem">DiD Key Finding</div>
+          <div style="margin-bottom:1rem">
+            <div style="font-size:0.8rem;color:var(--text2);margin-bottom:0.3rem">Treated (within 100m of cameras)</div>
+            <div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--green)">+14.45%</div>
+            <div style="font-size:0.75rem;color:var(--text3)">crash growth post-installation</div>
+          </div>
+          <div>
+            <div style="font-size:0.8rem;color:var(--text2);margin-bottom:0.3rem">Control (farther away)</div>
+            <div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--blue)">+21.14%</div>
+            <div style="font-size:0.75rem;color:var(--text3)">crash growth in same period</div>
+          </div>
+          <div style="margin-top:1rem;padding:0.8rem;background:var(--green-glow);border:1px solid var(--border-g);border-radius:6px;font-size:0.82rem;color:var(--green)">
+            Cameras moderated crash growth by ~6.7 percentage points
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY FINDINGS -->
+  <h3 style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin:2rem 0 1rem">Key Intelligence Discoveries</h3>
+  <div class="findings-grid">
+    <div class="finding">
+      <div class="finding-icon">🕐</div>
+      <div class="finding-title">Peak Risk Hours</div>
+      <div class="finding-text">Crash frequency peaks during <span class="finding-highlight">5PM–7PM weekday rush hour</span>. Alcohol-related severe crashes spike after midnight on weekends. Heatmap analysis revealed Friday evenings as highest combined risk.</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🗺️</div>
+      <div class="finding-title">Spatial Concentration</div>
+      <div class="finding-text"><span class="finding-highlight">Wards 2, 5, and 6</span> account for the majority of severe crashes. Central DC corridors show persistent hotspot patterns across all 15 years — risk is structural, not random.</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🚶</div>
+      <div class="finding-title">Pedestrian Effect</div>
+      <div class="finding-text">Crashes involving pedestrians are <span class="finding-highlight">dramatically more severe</span>. When pedestrians are involved, injury/fatal outcomes dominate; property-damage-only rates drop sharply.</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">📊</div>
+      <div class="finding-title">Frequency ≠ Severity</div>
+      <div class="finding-text">High crash-frequency zones <span class="finding-highlight">don't always overlap with high-severity zones</span>. Some moderate-frequency intersections show disproportionately severe outcomes — missed by traditional frequency-only approaches.</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">🌧️</div>
+      <div class="finding-title">Weather Integration</div>
+      <div class="finding-text">NOAA weather data merged by date showed <span class="finding-highlight">precipitation increases severe crash probability by ~18–23%</span>. Reduced visibility conditions correlate with 31% higher fatal rates.</div>
+    </div>
+    <div class="finding">
+      <div class="finding-icon">📷</div>
+      <div class="finding-title">Camera Effectiveness Varies</div>
+      <div class="finding-text">Truck restriction cameras showed the largest effect (−20%). Speed cameras showed minimal impact. <span class="finding-highlight">Camera placement strategy matters</span> more than camera quantity.</div>
+    </div>
+  </div>
+
+  <!-- CODE SNIPPET -->
+  <div class="card">
+    <h3 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:1rem">Key Code: BallTree Camera-Crash Spatial Linking</h3>
+    <div class="code-block">
+<span class="code-comment"># Link each crash to nearest camera within 100m using haversine distance</span>
+<span class="code-keyword">from</span> sklearn.neighbors <span class="code-keyword">import</span> BallTree
+<span class="code-keyword">import</span> numpy <span class="code-keyword">as</span> np
+
+<span class="code-comment"># Convert coordinates to radians for haversine metric</span>
+<span class="code-keyword">def</span> to_rad(df, lat_col, lon_col):
+    <span class="code-keyword">return</span> np.deg2rad(df[[lat_col, lon_col]].values)
+
+<span class="code-comment"># Build spatial index on camera coordinates</span>
+tree = BallTree(
+    to_rad(cam_clean, <span class="code-string">"CAMERA_LATITUDE"</span>, <span class="code-string">"CAMERA_LONGITUDE"</span>),
+    metric=<span class="code-string">"haversine"</span>
+)
+
+<span class="code-comment"># Query nearest camera for each crash (k=1 nearest neighbor)</span>
+dist_rad, idx = tree.query(
+    to_rad(cr_clean, <span class="code-string">"LATITUDE"</span>, <span class="code-string">"LONGITUDE"</span>), k=<span class="code-num">1</span>
+)
+
+<span class="code-comment"># Convert to meters (Earth radius = 6371km)</span>
+dist_meters = dist_rad.flatten() * <span class="code-num">6371000</span>
+
+<span class="code-comment"># Label crashes within 100m as treated</span>
+cr_clean[<span class="code-string">"within_100m"</span>] = (dist_meters <= <span class="code-num">100</span>).astype(int)
+
+<span class="code-comment"># DiD interaction term: treated × post-installation</span>
+monthly[<span class="code-string">"did_interaction"</span>] = monthly[<span class="code-string">"within_100m"</span>] * monthly[<span class="code-string">"post"</span>]
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== HEART DISEASE ===== -->
+  <div class="s-label">// Project 02</div>
+  <div class="card">
+    <div class="proj-header">
+      <div class="proj-icon-big">❤️</div>
+      <div class="proj-meta">
+        <div class="proj-title-big">Heart Disease Risk Prediction</div>
+        <div class="proj-course">Course Project · Machine Learning · The Catholic University of America</div>
+        <div style="margin-top:0.5rem"><span class="tag tag-g">KNN</span><span class="tag tag-b">Decision Tree</span><span class="tag tag-p">Random Forest</span><span class="tag tag-g">Python</span><span class="tag tag-b">Scikit-learn</span></div>
+      </div>
+    </div>
+
+    <p style="color:var(--text2);font-size:0.92rem;line-height:1.8;margin-bottom:1.5rem">
+      Built a full supervised ML pipeline on the UCI Heart Disease dataset (303 records, 13 clinical variables) to predict heart disease risk. Compared K-NN, Decision Tree, and Random Forest with hyperparameter tuning. Final model: <strong style="color:var(--green)">85% accuracy, F1-score 0.82</strong>.
+    </p>
+
+    <div class="two-col">
+      <div>
+        <h4 style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:1rem">Model Performance Comparison</h4>
+        <table class="model-table">
+          <thead><tr><th>Model</th><th>Accuracy</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>K-NN (k tuned 1–30)</td><td class="highlight">~82%</td><td style="color:var(--text3)">Best k found via loop</td></tr>
+            <tr><td>Decision Tree (depth=8)</td><td class="highlight">~83%</td><td style="color:var(--text3)">Pruned to avoid overfit</td></tr>
+            <tr><td>Random Forest (n=11)</td><td class="winner">85%</td><td style="color:var(--green)">Final model selected</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h4 style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:1rem">Top Predictors (Correlation with Target)</h4>
+        <div class="chart-bar-container">
+          <div class="chart-row">
+            <div class="chart-label" style="width:120px">CP (Chest Pain)</div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="width:85%;background:linear-gradient(90deg,var(--green),var(--blue))">High</div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-label" style="width:120px">Thalach (Max HR)</div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="width:72%;background:linear-gradient(90deg,var(--blue),#7c3aed)">Med-High</div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-label" style="width:120px">Cholesterol</div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="width:55%;background:linear-gradient(90deg,#7c3aed,var(--green))">Medium</div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-label" style="width:120px">Age</div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="width:40%;background:rgba(255,255,255,0.12)">Lower</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem;padding:1rem;background:var(--bg2);border:1px solid var(--border);border-radius:6px">
+      <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem">Key Finding</div>
+      <p style="color:var(--text2);font-size:0.88rem">Cross-validation confirmed the Random Forest generalizes well without overfitting. Training accuracy vs testing accuracy gap was minimal, indicating good bias-variance balance. Feature engineering separated categorical variables (one-hot encoded) from numerical (standardized).</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== ONEBANK ===== -->
+  <div class="s-label">// Project 03</div>
+  <div class="card">
+    <div class="proj-header">
+      <div class="proj-icon-big">🏦</div>
+      <div class="proj-meta">
+        <div class="proj-title-big">Loan Acceptance Prediction — OneBank</div>
+        <div class="proj-course">Final Project · DA/CSC 423/523 · Prof. Aysegul Cuhadar · The Catholic University of America</div>
+        <div style="margin-top:0.5rem"><span class="tag tag-g">Naive Bayes</span><span class="tag tag-b">Logistic Regression</span><span class="tag tag-p">Decision Tree</span><span class="tag tag-g">Ensemble</span></div>
+      </div>
+    </div>
+
+    <p style="color:var(--text2);font-size:0.92rem;line-height:1.8;margin-bottom:1.5rem">
+      Using historical campaign data from OneBank (5,000 customer records, 11 predictors), built and compared 5 models to predict personal loan acceptance. Goal: identify which existing customers are most likely to accept a consumer loan offer — enabling targeted marketing and reducing campaign costs.
+    </p>
+
+    <h4 style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:1rem">Model Accuracy Comparison (Validation Set)</h4>
+    <div class="chart-bar-container">
+      <div class="chart-row">
+        <div class="chart-label">Decision Tree</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:98%;background:linear-gradient(90deg,var(--green),var(--blue))">98.0%</div></div>
+        <div class="chart-val" style="color:var(--green)">98.0% ⭐</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Avg Probability</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:96.5%;background:linear-gradient(90deg,var(--blue),#7c3aed)">96.5%</div></div>
+        <div class="chart-val" style="color:var(--blue)">96.5%</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Majority Vote</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:95.3%;background:linear-gradient(90deg,#7c3aed,var(--green))">95.3%</div></div>
+        <div class="chart-val" style="color:#a78bfa">95.3%</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Logistic Regression</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:94.5%;background:rgba(0,180,255,0.4)">94.5%</div></div>
+        <div class="chart-val" style="color:var(--text2)">94.5%</div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">Naive Bayes</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:87.4%;background:rgba(255,255,255,0.1)">87.4%</div></div>
+        <div class="chart-val" style="color:var(--text3)">87.4%</div>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem;padding:1rem;background:var(--bg2);border:1px solid var(--border);border-radius:6px">
+      <div style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem">Ensemble Strategy</div>
+      <p style="color:var(--text2);font-size:0.88rem">Combined Naive Bayes + Logistic Regression + Decision Tree predictions via two ensemble methods: <strong style="color:var(--green)">Majority Vote</strong> (1 if ≥2 models agree) and <strong style="color:var(--blue)">Average Probability</strong> (1 if mean probability ≥0.5). Both outperformed Naive Bayes and Logistic Regression individually, demonstrating the value of ensemble approaches.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ===== R PROJECT ===== -->
+  <div class="s-label">// Project 04</div>
+  <div class="card">
+    <div class="proj-header">
+      <div class="proj-icon-big">📈</div>
+      <div class="proj-meta">
+        <div class="proj-title-big">Statistical Analysis — R (LSC 563)</div>
+        <div class="proj-course">Graduate Course Project · The Catholic University of America</div>
+        <div style="margin-top:0.5rem"><span class="tag tag-g">R</span><span class="tag tag-b">Statistical Modeling</span><span class="tag tag-p">Regression</span><span class="tag tag-g">Data Visualization</span></div>
+      </div>
+    </div>
+    <p style="color:var(--text2);font-size:0.92rem;line-height:1.8">
+      Graduate-level statistical modeling project using R — demonstrating proficiency in statistical regression, hypothesis testing, data visualization with ggplot2, and reproducible research workflows. Part of the M.S. Data Analytics curriculum at CUA, bridging statistical theory with applied data analysis.
+    </p>
+  </div>
+
+  <!-- BACK LINK -->
+  <div style="text-align:center;margin-top:4rem">
+    <a href="ibrahima_aaquil_portfolio.html" style="display:inline-flex;align-items:center;gap:0.5rem;padding:1rem 2.5rem;background:var(--green);color:#07090f;font-family:'Syne',sans-serif;font-weight:800;font-size:0.95rem;border-radius:4px;text-decoration:none;transition:all 0.2s">
+      ← Back to Full Portfolio
+    </a>
+  </div>
+
+</div>
+
+<footer style="text-align:center;padding:2rem;background:var(--bg);border-top:1px solid var(--border);color:var(--text3);font-size:0.78rem;font-family:'DM Mono',monospace;margin-top:4rem;position:relative;z-index:1">
+  <span style="background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Ibrahima Medina Aaquil</span> · Research Deep Dive · Washington DC · 2026
+</footer>
+
+</body>
+</html>

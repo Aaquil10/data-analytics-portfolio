@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ibrahima Medina Aaquil | AI & Data Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07090f;--bg2:#0d1020;--bg3:#131625;--surface:#181d2e;--surface2:#1e2438;
+  --green:#00f5c4;--blue:#00b4ff;--purple:#7c3aed;
+  --green-glow:rgba(0,245,196,0.1);--blue-glow:rgba(0,180,255,0.1);
+  --text:#e8edf8;--text2:#8892b0;--text3:#4a5268;
+  --border:rgba(255,255,255,0.06);
+  --border-g:rgba(0,245,196,0.2);--border-b:rgba(0,180,255,0.2);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden}
+
+/* GRID BG */
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(0,245,196,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,255,0.025) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;z-index:0}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem 3.5rem;background:rgba(7,9,15,0.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--text);text-decoration:none}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:0.82rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s}
+.nav-links a:hover{color:var(--green)}
+.nav-cta{padding:0.55rem 1.4rem;background:transparent;border:1px solid var(--border-g);color:var(--green);
+  font-weight:700;font-size:0.82rem;border-radius:4px;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em}
+.nav-cta:hover{background:var(--green-glow)}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:space-between;
+  padding:8rem 5rem 4rem;position:relative;z-index:1;gap:3rem;max-width:1300px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:0.6rem;padding:0.4rem 1.2rem;
+  border:1px solid var(--border-g);border-radius:100px;font-size:0.76rem;color:var(--green);
+  background:var(--green-glow);margin-bottom:2rem;width:fit-content;font-family:'DM Mono',monospace}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.7)}}
+.hero-name{font-family:'Syne',sans-serif;font-size:clamp(3rem,6vw,5.8rem);font-weight:800;
+  line-height:1.0;letter-spacing:-0.03em;margin-bottom:1.5rem}
+.outline-text{-webkit-text-stroke:1.5px rgba(232,237,248,0.25);color:transparent}
+.hero-tagline{font-size:1.05rem;color:var(--text2);max-width:560px;margin-bottom:2.5rem;line-height:1.85}
+.hl-g{color:var(--green);font-weight:600}
+.hl-b{color:var(--blue);font-weight:600}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:4rem}
+.btn-p{padding:0.85rem 2rem;background:var(--green);color:#07090f;font-weight:800;font-size:0.88rem;
+  border-radius:4px;text-decoration:none;transition:all 0.2s;letter-spacing:0.02em;font-family:'Syne',sans-serif}
+.btn-p:hover{background:#00ddb0;transform:translateY(-2px)}
+.btn-s{padding:0.85rem 2rem;background:var(--blue);color:#07090f;font-weight:800;font-size:0.88rem;
+  border-radius:4px;text-decoration:none;transition:all 0.2s;font-family:'Syne',sans-serif}
+.btn-s:hover{background:#00a0e8;transform:translateY(-2px)}
+.btn-o{padding:0.85rem 2rem;border:1px solid var(--border-b);color:var(--blue);font-weight:700;
+  font-size:0.88rem;border-radius:4px;text-decoration:none;transition:all 0.2s}
+.btn-o:hover{background:var(--blue-glow);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:3rem;padding-top:2.5rem;border-top:1px solid var(--border);flex-wrap:wrap}
+.stat{display:flex;flex-direction:column}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;
+  background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.stat-label{font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.3rem}
+
+/* HERO VISUAL */
+.hero-visual{flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.logo-box{width:280px;height:280px;background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.logo-box::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at center,rgba(0,245,196,0.08) 0%,rgba(0,180,255,0.05) 50%,transparent 70%)}
+.logo-initials{font-family:'Syne',sans-serif;font-size:5rem;font-weight:800;
+  background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:-0.05em;position:relative;z-index:1}
+.logo-ring{position:absolute;border-radius:50%;border:1px solid rgba(0,245,196,0.12);animation:spin 14s linear infinite}
+.logo-ring.r1{inset:-20px}
+.logo-ring.r2{inset:-40px;border-color:rgba(0,180,255,0.08);animation-duration:22s;animation-direction:reverse}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* DIVIDER */
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,245,196,0.25),rgba(0,180,255,0.25),transparent);
+  max-width:1100px;margin:0 auto;position:relative;z-index:1}
+
+/* SECTIONS */
+section{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:6rem 2rem}
+.s-label{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--green);letter-spacing:0.15em;
+  text-transform:uppercase;margin-bottom:0.8rem}
+.s-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;
+  letter-spacing:-0.02em;line-height:1.1;margin-bottom:1rem}
+.s-sub{color:var(--text2);font-size:1rem;max-width:540px;margin-bottom:3rem}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.75rem;
+  transition:all 0.3s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--green),var(--blue));opacity:0;transition:opacity 0.3s}
+.card:hover{border-color:rgba(0,245,196,0.18);transform:translateY(-4px);background:var(--surface2)}
+.card:hover::before{opacity:1}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:300px 1fr;gap:4rem;align-items:start}
+.about-logo{width:100%;aspect-ratio:1;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.about-logo::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at center,rgba(0,245,196,0.08) 0%,transparent 70%)}
+.about-logo-text{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;
+  background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.about-text p{color:var(--text2);margin-bottom:1.2rem;font-size:0.97rem;line-height:1.85}
+.about-text p strong{color:var(--text);font-weight:500}
+.about-links{display:flex;gap:0.8rem;margin-top:2rem;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;border:1px solid var(--border);
+  border-radius:4px;font-size:0.78rem;color:var(--text2);text-decoration:none;font-family:'DM Mono',monospace;
+  background:var(--bg3);transition:all 0.2s}
+.chip:hover{border-color:var(--border-g);color:var(--green);background:var(--green-glow)}
+
+/* RESEARCH */
+.research-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:2.5rem;position:relative;overflow:hidden}
+.research-card::after{content:'';position:absolute;top:-80px;right:-80px;width:250px;height:250px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,180,255,0.08) 0%,transparent 70%);pointer-events:none}
+.tag{display:inline-flex;padding:0.3rem 0.8rem;border-radius:4px;font-family:'DM Mono',monospace;
+  font-size:0.68rem;font-weight:500;margin-right:0.5rem;margin-bottom:0.5rem}
+.tag-g{background:rgba(0,245,196,0.08);color:var(--green);border:1px solid rgba(0,245,196,0.2)}
+.tag-b{background:rgba(0,180,255,0.08);color:var(--blue);border:1px solid rgba(0,180,255,0.2)}
+.tag-p{background:rgba(124,58,237,0.1);color:#a78bfa;border:1px solid rgba(124,58,237,0.25)}
+.tag-y{background:rgba(245,158,11,0.1);color:#fbbf24;border:1px solid rgba(245,158,11,0.25)}
+.r-title{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:700;margin:1.5rem 0 1rem;line-height:1.3}
+.r-abstract{color:var(--text2);font-size:0.93rem;line-height:1.85;margin-bottom:2rem}
+.r-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;
+  padding:1.5rem;background:var(--bg2);border-radius:6px;border:1px solid var(--border)}
+.metric{text-align:center}
+.metric-val{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;
+  background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.metric-label{font-size:0.7rem;color:var(--text3);margin-top:0.3rem;text-transform:uppercase;letter-spacing:0.07em}
+.award-badge{display:inline-flex;align-items:center;gap:0.6rem;padding:0.6rem 1.2rem;
+  border:1px solid rgba(245,158,11,0.3);border-radius:6px;background:rgba(245,158,11,0.08)}
+.award-badge span{font-size:0.8rem;color:#fbbf24;font-family:'DM Mono',monospace}
+
+/* AI DEMO */
+#ai-demo{background:var(--bg2);max-width:100%;padding:6rem}
+.ai-demo-inner{max-width:1100px;margin:0 auto}
+.demo-tabs{display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+.demo-tab{padding:0.7rem 1.5rem;border:1px solid var(--border);border-radius:4px;background:var(--surface);
+  color:var(--text2);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'DM Mono',monospace}
+.demo-tab.active{border-color:var(--border-g);color:var(--green);background:var(--green-glow)}
+.demo-tab:hover{border-color:var(--border-b);color:var(--blue)}
+.demo-panel{display:none}
+.demo-panel.active{display:block}
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
+.demo-map{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;aspect-ratio:16/9;position:relative}
+.demo-map iframe{width:100%;height:100%;border:none}
+.map-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 60%,rgba(7,9,15,0.8));pointer-events:none}
+.map-label{position:absolute;top:1rem;left:1rem;background:rgba(7,9,15,0.85);border:1px solid var(--border-g);
+  border-radius:6px;padding:0.5rem 1rem;font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--green)}
+.chatbox{background:var(--surface);border:1px solid var(--border);border-radius:8px;display:flex;flex-direction:column;height:420px}
+.chat-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.7rem}
+.chat-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+.chat-title{font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--green)}
+.chat-messages{flex:1;overflow-y:auto;padding:1.2rem;display:flex;flex-direction:column;gap:1rem}
+.msg{padding:0.8rem 1rem;border-radius:6px;font-size:0.88rem;line-height:1.6;max-width:85%}
+.msg-ai{background:var(--bg3);border:1px solid var(--border);color:var(--text2);align-self:flex-start}
+.msg-user{background:var(--green-glow);border:1px solid var(--border-g);color:var(--green);align-self:flex-end}
+.msg-label{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text3);margin-bottom:0.3rem}
+.chat-input{padding:1rem;border-top:1px solid var(--border);display:flex;gap:0.7rem}
+.chat-input input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:4px;
+  padding:0.6rem 1rem;color:var(--text);font-size:0.88rem;outline:none;font-family:'DM Sans',sans-serif}
+.chat-input input:focus{border-color:var(--border-g)}
+.chat-input button{padding:0.6rem 1.2rem;background:var(--green);color:#07090f;border:none;
+  border-radius:4px;font-weight:700;cursor:pointer;font-size:0.85rem;transition:all 0.2s}
+.chat-input button:hover{background:#00ddb0}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center}
+.stat-card .num{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;
+  background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-card .lbl{font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.2rem}
+
+/* PROJECTS GRID */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.proj-icon{font-size:1.8rem;margin-bottom:1rem}
+.proj-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.5rem}
+.proj-desc{color:var(--text2);font-size:0.88rem;line-height:1.65;margin-bottom:1rem}
+
+/* TIMELINE */
+.timeline{padding-left:2rem;position:relative}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;
+  background:linear-gradient(to bottom,var(--green),var(--blue),transparent)}
+.tl-item{position:relative;padding-bottom:2.8rem}
+.tl-item::before{content:'';position:absolute;left:-2.38rem;top:0.3rem;width:9px;height:9px;
+  border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));border:2px solid var(--bg)}
+.tl-period{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--green);letter-spacing:0.08em;margin-bottom:0.3rem}
+.tl-role{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.15rem}
+.tl-org{color:var(--text2);font-size:0.85rem;margin-bottom:0.7rem}
+.tl-list{list-style:none;padding:0}
+.tl-list li{color:var(--text2);font-size:0.87rem;line-height:1.65;padding-left:1rem;position:relative;margin-bottom:0.35rem}
+.tl-list li::before{content:'▸';position:absolute;left:0;color:var(--green);font-size:0.68rem;top:0.18rem}
+
+/* EDUCATION */
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.edu-school{color:var(--blue);font-size:0.88rem;font-weight:500;margin-bottom:0.2rem}
+.edu-degree{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.2rem}
+.edu-meta{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--text3);margin-bottom:0.5rem}
+.edu-detail{color:var(--text2);font-size:0.85rem;line-height:1.6}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem}
+.skill-cat{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--green);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.9rem}
+.skill-tags{display:flex;flex-wrap:wrap;gap:0.45rem}
+.skill-tag{padding:0.3rem 0.8rem;border:1px solid var(--border);border-radius:4px;font-size:0.78rem;
+  color:var(--text2);background:var(--bg3);font-family:'DM Mono',monospace;transition:all 0.2s}
+.skill-tag:hover{border-color:var(--border-b);color:var(--blue)}
+
+/* AWARDS */
+.awards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-bottom:3rem}
+.award-card{display:flex;gap:1.2rem;align-items:flex-start}
+.award-icon{font-size:1.8rem;flex-shrink:0;margin-top:0.1rem}
+.award-name{font-family:'Syne',sans-serif;font-size:0.97rem;font-weight:700;margin-bottom:0.15rem}
+.award-org{color:var(--green);font-size:0.82rem;margin-bottom:0.1rem}
+.award-year{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text3)}
+
+/* CONTACT */
+#contact{background:var(--bg2);max-width:100%;padding:6rem;text-align:center;border-top:1px solid var(--border)}
+.contact-grid{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-top:3rem}
+.contact-card{display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:1.4rem 2rem;
+  background:var(--surface);border:1px solid var(--border);border-radius:8px;text-decoration:none;
+  transition:all 0.3s;min-width:150px}
+.contact-card:hover{border-color:var(--border-g);background:var(--surface2);transform:translateY(-4px)}
+.cc-icon{font-size:1.4rem}
+.cc-label{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em}
+.cc-val{font-size:0.82rem;color:var(--text);font-weight:500}
+
+/* FOOTER */
+footer{text-align:center;padding:2rem;background:var(--bg);border-top:1px solid var(--border);
+  color:var(--text3);font-size:0.78rem;font-family:'DM Mono',monospace;position:relative;z-index:1}
+footer span{background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  #hero{flex-direction:column;padding:7rem 1.5rem 3rem;text-align:center}
+  .hero-btns{justify-content:center}
+  .hero-stats{justify-content:center}
+  .hero-visual{display:none}
+  .about-grid{grid-template-columns:1fr}
+  .demo-grid{grid-template-columns:1fr}
+  .edu-grid{grid-template-columns:1fr}
+  section{padding:4rem 1.5rem}
+  #ai-demo,#contact{padding:4rem 1.5rem}
+  .r-metrics{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">IMA<span>_</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#ai-demo">AI Demo</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Hire Me</button>
+</nav>
+
+<!-- HERO -->
+<div style="position:relative;z-index:1">
+<div id="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><span class="badge-dot"></span>Available for PhD programs &amp; AI roles — 2026</div>
+    <h1 class="hero-name">Ibrahima<br><span class="outline-text">Medina Aaquil</span></h1>
+    <p class="hero-tagline">
+      I build <span class="hl-g">AI systems that solve real problems</span> — from predicting traffic crashes with 88.8% recall to <span class="hl-b">automating data pipelines</span> for smarter cities and businesses.
+    </p>
+    <div class="hero-btns">
+      <a href="#research" class="btn-p">View Research ↓</a>
+      <a href="#ai-demo" class="btn-s">See AI Demo ↓</a>
+      <a href="https://github.com/Aaquil10/data-analytics-portfolio" target="_blank" class="btn-o">GitHub →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">300K+</span><span class="stat-label">Records Analyzed</span></div>
+      <div class="stat"><span class="stat-num">88.8%</span><span class="stat-label">ML Recall Score</span></div>
+      <div class="stat"><span class="stat-num">15 yrs</span><span class="stat-label">Data Span</span></div>
+      <div class="stat"><span class="stat-num">🏆 2026</span><span class="stat-label">Research Award</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="logo-box">
+      <span class="logo-initials">IMA</span>
+      <div class="logo-ring r1"></div>
+      <div class="logo-ring r2"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="s-label">// 01 — About</div>
+  <div class="about-grid">
+    <div>
+      <div class="about-logo"><span class="about-logo-text">IMA</span></div>
+    </div>
+    <div class="about-text">
+      <h2 class="s-title">Data Scientist.<br>AI Builder.</h2>
+      <p>I'm <strong>Ibrahima Medina Aaquil</strong>, a Data Scientist and Machine Learning researcher based in the Washington, DC area, holding an M.S. in Data Analytics (STEM) from The Catholic University of America — plus dual bachelor's degrees in Computer Science and Financial Management from ISCA, Senegal.</p>
+      <p>My work sits at the intersection of <strong>AI, public policy, and real-world impact</strong>. I build predictive systems, automated pipelines, and intelligent tools that turn raw data into decisions. My graduate research — recognized with a national award — applied machine learning, geospatial analysis, and causal inference to 15 years of urban crash data in Washington, DC.</p>
+      <p>In an era where AI is reshaping every industry, I don't just analyze data — I <strong>build with AI</strong>: dashboards, chatbots, automation systems, and end-to-end ML pipelines for organizations that need to move faster and smarter.</p>
+      <p>Currently pursuing fully funded <strong>PhD opportunities</strong> in Economics, Data Science, or related fields, with a focus on AI-driven policy research and international development.</p>
+      <div class="about-links">
+        <a href="https://www.linkedin.com/in/ibrahima-medina-aaquil-b8137932a" target="_blank" class="chip">↗ LinkedIn</a>
+        <a href="https://github.com/Aaquil10/data-analytics-portfolio" target="_blank" class="chip">↗ GitHub</a>
+        <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6524958" target="_blank" class="chip">↗ SSRN Paper</a>
+        <a href="mailto:medina19aaquil@gmail.com" class="chip">✉ Email</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="s-label">// 02 — Research</div>
+  <h2 class="s-title">Published Research</h2>
+  <p class="s-sub">Award-winning research combining machine learning, geospatial analysis, and causal inference for urban policy impact.</p>
+  <div class="research-card">
+    <div>
+      <span class="tag tag-g">Machine Learning</span>
+      <span class="tag tag-b">Geospatial</span>
+      <span class="tag tag-p">Causal Inference</span>
+      <span class="tag tag-g">CatBoost</span>
+      <span class="tag tag-b">Python</span>
+      <span class="tag tag-y">SSRN 2026</span>
+    </div>
+    <h3 class="r-title">Beyond Crash Counts: Modeling Traffic Crash Severity in Washington, DC, Using Machine Learning and Causal Inference</h3>
+    <p class="r-abstract">A large-scale, data-driven analysis using 300,000+ police-reported crash records across 15 years in Washington, DC. The study integrates geospatial hotspot analysis, a CatBoost gradient boosting classifier optimized for severe crash detection, and a Difference-in-Differences quasi-experimental framework to evaluate the impact of automated enforcement cameras. Findings show that severe crash risk is spatially concentrated — not random — and that targeted AI-powered enforcement can moderate crash growth in high-risk urban corridors.</p>
+    <div class="r-metrics">
+      <div class="metric"><div class="metric-val">88.8%</div><div class="metric-label">Recall — Severe Crashes</div></div>
+      <div class="metric"><div class="metric-val">300K+</div><div class="metric-label">Records · 15 Years</div></div>
+      <div class="metric"><div class="metric-val">−6.7%</div><div class="metric-label">Camera Enforcement Effect</div></div>
+    </div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center">
+      <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6524958" target="_blank" class="btn-p" style="font-size:0.82rem;padding:0.65rem 1.4rem">Read on SSRN ↗</a>
+      <div class="award-badge"><span>🏆</span><span>Excellence in Research — William &amp; Mary Graduate Research Symposium 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- AI DEMO -->
+<div id="ai-demo">
+<div class="ai-demo-inner">
+  <div class="s-label">// 03 — AI Demo</div>
+  <h2 class="s-title">Live AI Systems</h2>
+  <p class="s-sub">Interactive demonstrations of AI tools I've built — this is what I can build for your organization.</p>
+
+  <div class="demo-tabs">
+    <button class="demo-tab active" onclick="switchDemo('traffic')">🚦 DC Traffic Safety AI</button>
+    <button class="demo-tab" onclick="switchDemo('business')">📊 Business Intelligence AI</button>
+  </div>
+
+  <!-- TRAFFIC DEMO -->
+  <div class="demo-panel active" id="demo-traffic">
+    <div class="stats-row">
+      <div class="stat-card"><div class="num">300K+</div><div class="lbl">Crash Records</div></div>
+      <div class="stat-card"><div class="num">88.8%</div><div class="lbl">ML Recall</div></div>
+      <div class="stat-card"><div class="num">247</div><div class="lbl">Cameras Analyzed</div></div>
+      <div class="stat-card"><div class="num">−6.7%</div><div class="lbl">Crash Reduction</div></div>
+    </div>
+    <div class="demo-grid">
+      <div>
+        <div class="demo-map">
+          <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-77.12,38.79,-76.91,38.99&layer=hot&marker=38.89,-77.03" loading="lazy"></iframe>
+          <div class="map-overlay"></div>
+          <div class="map-label">🛰 Washington DC — Crash Hotspot Analysis</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem">
+          <div class="card" style="padding:1rem;text-align:center">
+            <div style="font-size:0.7rem;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem">Highest Risk Zone</div>
+            <div style="font-size:0.95rem;font-weight:600;color:var(--green)">Central DC Corridors</div>
+          </div>
+          <div class="card" style="padding:1rem;text-align:center">
+            <div style="font-size:0.7rem;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem">Peak Risk Hour</div>
+            <div style="font-size:0.95rem;font-weight:600;color:var(--blue)">5PM – 7PM Weekdays</div>
+          </div>
+        </div>
+      </div>
+      <div class="chatbox">
+        <div class="chat-header">
+          <div class="chat-dot"></div>
+          <span class="chat-title">Traffic Safety AI Assistant</span>
+        </div>
+        <div class="chat-messages" id="traffic-msgs">
+          <div class="msg msg-ai">
+            <div class="msg-label">AI SYSTEM</div>
+            Hello! I'm the DC Traffic Safety AI. I can answer questions about crash patterns, high-risk zones, enforcement effectiveness, and predictive safety insights. Ask me anything!
+          </div>
+          <div class="msg msg-ai">
+            <div class="msg-label">AI SYSTEM</div>
+            Try asking: <em>"Where are the most dangerous intersections?"</em> or <em>"What reduces crashes most?"</em>
+          </div>
+        </div>
+        <div class="chat-input">
+          <input type="text" id="traffic-input" placeholder="Ask the Traffic Safety AI..." onkeypress="if(event.key==='Enter')sendTrafficMsg()">
+          <button onclick="sendTrafficMsg()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUSINESS DEMO -->
+  <div class="demo-panel" id="demo-business">
+    <div class="stats-row">
+      <div class="stat-card"><div class="num">$4.38M</div><div class="lbl">Annual Revenue</div></div>
+      <div class="stat-card"><div class="num">73%</div><div class="lbl">Gross Margin</div></div>
+      <div class="stat-card"><div class="num">88</div><div class="lbl">Products Tracked</div></div>
+      <div class="stat-card"><div class="num">+12%</div><div class="lbl">Growth Forecast</div></div>
+    </div>
+    <div class="demo-grid">
+      <div class="card" style="padding:2rem">
+        <h3 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:1.5rem;color:var(--text)">📈 Revenue by Category</h3>
+        <div id="bar-chart" style="display:flex;flex-direction:column;gap:0.6rem"></div>
+        <p style="font-size:0.75rem;color:var(--text3);margin-top:1.5rem;font-family:'DM Mono',monospace">* Sample business intelligence data — I build these dashboards for real companies</p>
+      </div>
+      <div class="chatbox">
+        <div class="chat-header">
+          <div class="chat-dot" style="background:var(--blue)"></div>
+          <span class="chat-title" style="color:var(--blue)">Business Intelligence AI</span>
+        </div>
+        <div class="chat-messages" id="biz-msgs">
+          <div class="msg msg-ai">
+            <div class="msg-label">BI ASSISTANT</div>
+            Hi! I'm your Business Intelligence AI. I analyze company data and provide strategic insights. I can answer questions about revenue, performance, forecasts, and recommendations.
+          </div>
+        </div>
+        <div class="chat-input">
+          <input type="text" id="biz-input" placeholder="Ask about your business data..." onkeypress="if(event.key==='Enter')sendBizMsg()">
+          <button onclick="sendBizMsg()" style="background:var(--blue)">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="s-label">// 04 — Projects & Builds</div>
+  <h2 class="s-title">Things I've Built</h2>
+  <p class="s-sub">From ML pipelines to AI chatbots — real deliverables demonstrating applied AI and data engineering.</p>
+  <div class="projects-grid">
+    <div class="card">
+      <div class="proj-icon">🚦</div>
+      <div style="margin-bottom:0.8rem"><span class="tag tag-g">CatBoost</span><span class="tag tag-b">GIS</span><span class="tag tag-p">DiD</span></div>
+      <div class="proj-title">Urban Crash Severity ML System</div>
+      <div class="proj-desc">End-to-end ML pipeline on 300K+ crash records: geospatial hotspot mapping, multi-class severity classifier (88.8% recall), and quasi-experimental policy evaluation. Published on SSRN, award-winning.</div>
+    </div>
+    <div class="card">
+      <div class="proj-icon">🤖</div>
+      <div style="margin-bottom:0.8rem"><span class="tag tag-g">AI</span><span class="tag tag-b">Automation</span><span class="tag tag-g">Chatbot</span></div>
+      <div class="proj-title">AI Chatbot & Automation Tools</div>
+      <div class="proj-desc">Building AI-powered chatbots and automated workflow systems for businesses. Focus on practical deployments that scale operations, reduce manual work, and surface real-time insights from data.</div>
+    </div>
+    <div class="card">
+      <div class="proj-icon">❤️</div>
+      <div style="margin-bottom:0.8rem"><span class="tag tag-g">Scikit-learn</span><span class="tag tag-b">Python</span></div>
+      <div class="proj-title">Heart Disease Risk Prediction</div>
+      <div class="proj-desc">Supervised ML pipeline on the UCI Heart Disease dataset. Achieved 85% accuracy, F1-score of 0.82. Identified cholesterol levels, chest pain type, and max heart rate as key predictors for clinical decision support.</div>
+    </div>
+    <div class="card">
+      <div class="proj-icon">🏦</div>
+      <div style="margin-bottom:0.8rem"><span class="tag tag-p">Classification</span><span class="tag tag-b">Python</span></div>
+      <div class="proj-title">Loan Acceptance Prediction — OneBank</div>
+      <div class="proj-desc">Predictive model on demographic and financial data to estimate loan approval probability. Identified key drivers of loan acceptance and generated actionable underwriting insights.</div>
+    </div>
+    <div class="card">
+      <div class="proj-icon">📊</div>
+      <div style="margin-bottom:0.8rem"><span class="tag tag-b">Power BI</span><span class="tag tag-g">SQL</span><span class="tag tag-b">Tableau</span></div>
+      <div class="proj-title">Business Intelligence Dashboards</div>
+      <div class="proj-desc">Custom KPI dashboards, automated reports, and data pipelines for DC-area small businesses. Making enterprise-grade analytics accessible — real-time insights from your company's own data.</div>
+    </div>
+    <div class="card">
+      <div class="proj-icon">🌍</div>
+      <div style="margin-bottom:0.8rem"><span class="tag tag-g">REDCap</span><span class="tag tag-b">SQL</span><span class="tag tag-p">Python</span></div>
+      <div class="proj-title">Research Data Infrastructure — CUA</div>
+      <div class="proj-desc">Built reproducible data workflows for 50+ researchers at CUA. Migrated datasets to REDCap with zero data loss, reduced reporting errors by 20%, and automated validation pipelines with Excel and SQL.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="s-label">// 05 — Experience</div>
+  <h2 class="s-title">Professional Journey</h2>
+  <p class="s-sub">Research, data operations, community leadership, and freelance AI work.</p>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-period">Aug 2025 – Dec 2025</div>
+      <div class="tl-role">Independent ML Researcher — Traffic Safety & Policy Analysis</div>
+      <div class="tl-org">The Catholic University of America, Washington DC</div>
+      <ul class="tl-list">
+        <li>Modeled crash severity across 300K+ records using CatBoost, achieving 88.8% recall for severe crashes</li>
+        <li>Designed integrated spatio-temporal framework combining ML and causal inference for urban risk modeling</li>
+        <li>Evaluated impact of automated enforcement cameras using Difference-in-Differences quasi-experimental design</li>
+        <li>Presented at William & Mary Graduate Research Symposium — received Award for Excellence in Research (2026)</li>
+        <li>Published findings as SSRN preprint (Abstract ID: 6524958)</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-period">Sep 2024 – Oct 2025</div>
+      <div class="tl-role">Research Assistant, Data Analytics</div>
+      <div class="tl-org">The Catholic University of America, Washington DC</div>
+      <ul class="tl-list">
+        <li>Analyzed 30,000+ records using Python and SQL to support institutional research and decision-making</li>
+        <li>Maintained validation pipelines for datasets used by 50+ researchers, reducing reporting errors by 20%</li>
+        <li>Developed reproducible Jupyter Notebook workflows for statistical modeling and research reporting</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-period">Feb 2024 – Aug 2024</div>
+      <div class="tl-role">Data Operator — Office of Transfer Credit</div>
+      <div class="tl-org">The Catholic University of America, Washington DC</div>
+      <ul class="tl-list">
+        <li>Automated data processing workflows using Excel and SQL, reducing manual work by 40%</li>
+        <li>Migrated and validated structured datasets in REDCap with zero data loss</li>
+        <li>Developed data dictionaries and led user acceptance testing (UAT) to improve reporting accuracy</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-period">Oct 2025 – Present</div>
+      <div class="tl-role">Data Support Volunteer</div>
+      <div class="tl-org">American Red Cross, National Capital & Greater Chesapeake Region</div>
+      <ul class="tl-list">
+        <li>Clean and validate operational datasets supporting disaster response and community health programs</li>
+        <li>Prepare structured reports to monitor volunteer activity and operational capacity</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-period">2025 – 2026</div>
+      <div class="tl-role">President, Graduate Student Association</div>
+      <div class="tl-org">The Catholic University of America, Washington DC</div>
+      <ul class="tl-list">
+        <li>Led and represented 3,000+ graduate students as primary liaison to university administration</li>
+        <li>Managed budget and secured sponsorship funding for graduate research initiatives</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-period">2025 – Present</div>
+      <div class="tl-role">Freelance AI & Data Analytics Consultant</div>
+      <div class="tl-org">Independent — DC Area & Remote</div>
+      <ul class="tl-list">
+        <li>Building AI tools, dashboards, and automated pipelines for small businesses in the DC area</li>
+        <li>Services: AI chatbots, custom dashboards, data pipelines, website development</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDUCATION & AWARDS -->
+<section id="education">
+  <div class="s-label">// 06 — Education & Awards</div>
+  <h2 class="s-title">Academic Foundation</h2>
+
+  <h3 style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1.5rem">Degrees</h3>
+  <div class="edu-grid" style="margin-bottom:3rem">
+    <div class="card">
+      <div class="edu-school">The Catholic University of America</div>
+      <div class="edu-degree">M.S. Data Analytics (STEM)</div>
+      <div class="edu-meta">Washington, DC · Jan 2024 – Dec 2025</div>
+      <div class="edu-detail">Machine Learning · AI · Statistical Modeling · Database Systems · Data Mining · Causal Inference · Geospatial Analysis · Data Visualization · Business Analytics</div>
+    </div>
+    <div class="card">
+      <div class="edu-school">ISCA — Institut Supérieur de Commerce et d'Administration · Senegal</div>
+      <div class="edu-degree">Dual Bachelor's Degrees</div>
+      <div class="edu-meta">Saint-Louis, Senegal</div>
+      <div class="edu-detail">
+        <strong style="color:var(--green)">B.S. Computer Science</strong> · Dec 2020 – Aug 2023<br><br>
+        <strong style="color:var(--blue)">B.B.A. Financial Management</strong> · Oct 2016 – Mar 2023<br><br>
+        🏅 <strong style="color:var(--text)">Best Research on Entrepreneurship</strong> — awarded for outstanding undergraduate research in business and entrepreneurship.
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1.5rem">Honors & Certifications</h3>
+  <div class="awards-grid">
+    <div class="card"><div class="award-card">
+      <div class="award-icon">🏆</div>
+      <div>
+        <div class="award-name">Award for Excellence in Research</div>
+        <div class="award-org">William & Mary Graduate Research Symposium</div>
+        <div class="award-year">2026 · Selected by interdisciplinary faculty panel as visiting scholar</div>
+      </div>
+    </div></div>
+    <div class="card"><div class="award-card">
+      <div class="award-icon">🏅</div>
+      <div>
+        <div class="award-name">Best Research on Entrepreneurship</div>
+        <div class="award-org">ISCA, Saint-Louis, Senegal</div>
+        <div class="award-year">2023 · Undergraduate research award</div>
+      </div>
+    </div></div>
+    <div class="card"><div class="award-card">
+      <div class="award-icon">📜</div>
+      <div>
+        <div class="award-name">Google Data Analytics</div>
+        <div class="award-org">Coursera / Google</div>
+        <div class="award-year">Professional Certificate</div>
+      </div>
+    </div></div>
+    <div class="card"><div class="award-card">
+      <div class="award-icon">🎓</div>
+      <div>
+        <div class="award-name">Machine Learning and AI with Python</div>
+        <div class="award-org">HarvardX</div>
+        <div class="award-year">Professional Certificate</div>
+      </div>
+    </div></div>
+  </div>
+
+  <h3 style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:1.5rem;margin-top:3rem">Technical Skills</h3>
+  <div class="skills-grid">
+    <div class="card"><div class="skill-cat">Languages & Libraries</div><div class="skill-tags">
+      <span class="skill-tag">Python</span><span class="skill-tag">Pandas</span><span class="skill-tag">NumPy</span>
+      <span class="skill-tag">Scikit-learn</span><span class="skill-tag">R</span><span class="skill-tag">SQL</span><span class="skill-tag">HTML/CSS</span>
+    </div></div>
+    <div class="card"><div class="skill-cat">AI & Machine Learning</div><div class="skill-tags">
+      <span class="skill-tag">CatBoost</span><span class="skill-tag">Random Forest</span><span class="skill-tag">Gradient Boosting</span>
+      <span class="skill-tag">Causal Inference</span><span class="skill-tag">DiD</span><span class="skill-tag">NLP</span>
+    </div></div>
+    <div class="card"><div class="skill-cat">Visualization & BI</div><div class="skill-tags">
+      <span class="skill-tag">Power BI</span><span class="skill-tag">Tableau</span><span class="skill-tag">Looker Studio</span><span class="skill-tag">GIS</span>
+    </div></div>
+    <div class="card"><div class="skill-cat">Databases & Cloud</div><div class="skill-tags">
+      <span class="skill-tag">MySQL</span><span class="skill-tag">PostgreSQL</span><span class="skill-tag">Snowflake</span>
+      <span class="skill-tag">AWS S3</span><span class="skill-tag">AWS Lambda</span><span class="skill-tag">DBT</span>
+    </div></div>
+    <div class="card"><div class="skill-cat">Tools & Dev</div><div class="skill-tags">
+      <span class="skill-tag">Git/GitHub</span><span class="skill-tag">Jupyter</span><span class="skill-tag">VS Code</span>
+      <span class="skill-tag">Excel</span><span class="skill-tag">REDCap</span><span class="skill-tag">AI APIs</span>
+    </div></div>
+    <div class="card"><div class="skill-cat">Languages Spoken</div><div class="skill-tags">
+      <span class="skill-tag">English — Full Professional</span><span class="skill-tag">French — Native</span>
+    </div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div id="contact" style="position:relative;z-index:1">
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <div class="s-label" style="justify-content:center;display:flex">// 07 — Contact</div>
+    <h2 class="s-title">Let's Build Something Together</h2>
+    <p style="color:var(--text2);max-width:500px;margin:0 auto 1rem">Open to PhD programs, AI research collaborations, data consulting, and full-time roles in data science and AI.</p>
+    <div class="contact-grid">
+      <a href="mailto:medina19aaquil@gmail.com" class="contact-card">
+        <div class="cc-icon">✉️</div><div class="cc-label">Email</div><div class="cc-val">medina19aaquil@gmail.com</div>
+      </a>
+      <a href="https://www.linkedin.com/in/ibrahima-medina-aaquil-b8137932a" target="_blank" class="contact-card">
+        <div class="cc-icon">💼</div><div class="cc-label">LinkedIn</div><div class="cc-val">ibrahima-medina-aaquil</div>
+      </a>
+      <a href="https://github.com/Aaquil10/data-analytics-portfolio" target="_blank" class="contact-card">
+        <div class="cc-icon">🐙</div><div class="cc-label">GitHub</div><div class="cc-val">Aaquil10</div>
+      </a>
+      <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6524958" target="_blank" class="contact-card">
+        <div class="cc-icon">📄</div><div class="cc-label">Research</div><div class="cc-val">SSRN Preprint 2026</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>Ibrahima Medina Aaquil</span> · Data Scientist & AI Builder · Washington DC · 2026
+</footer>
+
+<script>
+// ===== DEMO TABS =====
+function switchDemo(tab) {
+  document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('demo-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===== TRAFFIC AI CHATBOT =====
+const trafficKB = {
+  "dangerous intersection": "Based on my analysis of 300,000+ crash records, the most dangerous intersections in DC are concentrated along Rhode Island Ave NW, Georgia Ave NW, and the I-295 corridor. These areas show persistent crash severity clusters across 15 years of data.",
+  "reduce crash": "My Difference-in-Differences analysis shows automated enforcement cameras reduce crash growth by ~6.7%. Truck restriction cameras showed the highest effectiveness (-20%), followed by stop sign and red light cameras (-14%). Speed cameras showed smaller effects.",
+  "peak": "Crash severity peaks on Friday evenings between 5PM–7PM. Alcohol-related severe crashes spike after midnight on weekends. Rush hour (7–9AM, 4–7PM) shows highest crash frequency but not always highest severity.",
+  "weather": "My analysis incorporating NOAA weather data shows precipitation increases severe crash probability by 18–23%. Reduced visibility conditions correlate with a 31% higher rate of fatal outcomes in the dataset.",
+  "camera": "I spatially linked 247 automated enforcement cameras using a BallTree nearest-neighbor algorithm with haversine distance. Crashes within 100 meters of cameras were classified as treated locations in the DiD analysis.",
+  "machine learning": "The CatBoost classifier achieved 88.8% recall for severe crashes — meaning it correctly identifies nearly 9 out of 10 severe incidents before they're classified. I used class weighting and threshold tuning to handle the imbalanced dataset.",
+  "default": "Great question! My traffic safety model analyzed 300,000+ crash records over 15 years using CatBoost ML, geospatial clustering, and Difference-in-Differences causal inference. I can tell you about crash hotspots, enforcement effectiveness, peak risk hours, or my ML methodology. What would you like to explore?"
+};
+
+function sendTrafficMsg() {
+  const input = document.getElementById('traffic-input');
+  const msgs = document.getElementById('traffic-msgs');
+  const text = input.value.trim();
+  if (!text) return;
+  msgs.innerHTML += `<div class="msg msg-user"><div class="msg-label">YOU</div>${text}</div>`;
+  input.value = '';
+  setTimeout(() => {
+    const lower = text.toLowerCase();
+    let response = trafficKB.default;
+    for (const [key, val] of Object.entries(trafficKB)) {
+      if (key !== 'default' && lower.includes(key)) { response = val; break; }
+    }
+    msgs.innerHTML += `<div class="msg msg-ai"><div class="msg-label">AI SYSTEM</div>${response}</div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 700);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ===== BUSINESS AI CHATBOT =====
+const bizKB = {
+  "revenue": "Based on current data, total monthly revenue is $360,000 with annual revenue of $4.38M. Top performing category is Main Course at $92,280/month (25.6% of total). I recommend focusing promotions on high-margin categories like Drinks (85% margin) and Desserts (79% margin).",
+  "margin": "Gross margin is currently 73% overall. Highest margins: Drinks (85%), Desserts (79%), Cold Dish & Dim Sum (76%). Lowest: AYCE Brunch (58%) and Chef's Specialty (65%). Strategy: push high-margin items, review AYCE pricing.",
+  "promote": "To maximize profit, I recommend promoting: 1) Drinks — highest margin (85%) with growth potential, 2) Desserts — 79% margin and low ticket resistance, 3) Dim Sum — high volume + 76% margin. Bundle deals between Main Course and Drinks could boost average ticket size.",
+  "forecast": "Based on current trends and a 10% category growth scenario, projected monthly revenue could reach $396,000–$410,000. Annual forecast: $4.75M–$4.92M. Key driver: expanding Chef's Specialty volume — currently only 4 items but 65% margin.",
+  "underperform": "AYCE Brunch (58% margin, 1 item) is underperforming relative to other categories. Recommendations: 1) Add 2-3 new brunch items, 2) Review pricing — current $28 flat may be too low, 3) Consider time-limited promotions to drive weekend traffic.",
+  "summary": "Business Summary: 88 menu items across 10 categories. Daily revenue: $12,000. Monthly: $360,000. Annual: $4.38M. Gross margin: 73%. Strongest categories: Main Course ($92K/mo), Chinese Tapas ($67K/mo), Dim Sum ($53K/mo). Opportunity: scale high-margin categories (Drinks, Desserts) and optimize AYCE pricing.",
+  "default": "I'm your Business Intelligence AI. I can analyze revenue performance, identify underperforming categories, forecast growth scenarios, and recommend strategic actions. Try asking about revenue, margins, what to promote, or a full business summary!"
+};
+
+function sendBizMsg() {
+  const input = document.getElementById('biz-input');
+  const msgs = document.getElementById('biz-msgs');
+  const text = input.value.trim();
+  if (!text) return;
+  msgs.innerHTML += `<div class="msg msg-user"><div class="msg-label">YOU</div>${text}</div>`;
+  input.value = '';
+  setTimeout(() => {
+    const lower = text.toLowerCase();
+    let response = bizKB.default;
+    for (const [key, val] of Object.entries(bizKB)) {
+      if (key !== 'default' && lower.includes(key)) { response = val; break; }
+    }
+    msgs.innerHTML += `<div class="msg msg-ai"><div class="msg-label">BI ASSISTANT</div>${response}</div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 700);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ===== BAR CHART =====
+const chartData = [
+  {label:'Main Course',val:92280,max:92280},
+  {label:'Chinese Tapas',val:66840,max:92280},
+  {label:'Dim Sum',val:53100,max:92280},
+  {label:'Drinks',val:33840,max:92280},
+  {label:'Chef\'s Specialty',val:33660,max:92280},
+  {label:'AYCE Brunch',val:31080,max:92280},
+];
+const chart = document.getElementById('bar-chart');
+if(chart) {
+  chartData.forEach(d => {
+    const pct = Math.round((d.val/d.max)*100);
+    chart.innerHTML += `
+      <div style="display:flex;align-items:center;gap:0.8rem">
+        <div style="width:110px;font-size:0.75rem;color:var(--text2);text-align:right;flex-shrink:0">${d.label}</div>
+        <div style="flex:1;background:var(--bg3);border-radius:3px;height:22px;overflow:hidden;border:1px solid var(--border)">
+          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:3px;transition:width 1s ease"></div>
+        </div>
+        <div style="width:70px;font-size:0.75rem;color:var(--green);font-family:'DM Mono',monospace">\$${(d.val/1000).toFixed(0)}K</div>
+      </div>`;
+  });
+}
+
+// ===== NAV SCROLL EFFECT =====
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if(window.scrollY > 50) nav.style.borderBottomColor = 'rgba(0,245,196,0.15)';
+  else nav.style.borderBottomColor = 'rgba(255,255,255,0.06)';
+});
+</script>
+</body>
+</html>
+<!-- This is a marker - file already complete -->
